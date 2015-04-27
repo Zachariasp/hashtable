@@ -1,0 +1,51 @@
+/** 
+    Zacharias Shufflebarger
+    CS360 
+    February 2, 2015
+**/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#define MAX_WORD_SIZE 256
+
+/* This structure is used for creating a singly-linked
+   list. It stores a key/value pair that represent a 
+   word/frequency pair. */  
+typedef struct Node {
+  char* key;
+  void* count; // referred to as "value" as well.
+  struct Node* next;
+} Node;
+
+/* This structure is a rudamentary hash table.  It is
+   used as an array of linked lists, but also holds
+   information for how many words have been read into it
+   and how many times those words have been repeated (key/value). */
+typedef struct Hash {
+  int entries;
+  int size;
+  Node** table;
+} Hash;
+
+/* Methods for use on Nodes. */
+
+Node* newNode(char* key);
+Node* newHeadNode();
+int compare(const void* a, const void* b);
+
+/* Methods for use on the Hash Table. */
+Hash* createHash(int size);
+unsigned hashFunction(Hash* hash, char* key);
+void insert(Hash* hash, char *key, void* value);
+void* search(Hash* hash, char* key);
+void apply(Hash* hash, void (*func)(char* key, void* value), unsigned iterations);
+void clearHash(Hash* hash);
+void reHash(Hash* hash);
+
+/* Method used as a 'user supplied' method, meaning that this
+ method has no understanding of how any of the rest of the code
+works. It is for use in the apply() function.*/
+
+void print(char* key, void* value);
